@@ -24,7 +24,7 @@ public class PersonController {
         return player;
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public Person update(@RequestBody Person player) {
         System.out.println("Post player id:"+player.getId());
         player = personService.savePerson(player);
@@ -39,13 +39,23 @@ public class PersonController {
 
     @PostMapping("/login")
     public Person login(@RequestBody Person person) {
-        List<Person> persons = personService.findByEmailAndPassword(person.getEmail(), person.getPassword());
-        person=null;
+        List<Person> persons = personService.findAll();
+        //List<Person> persons = personService.findByEmailAndPassword(person.getEmail(), person.getPassword());
+        for (Person person1:
+             persons) {
+            if (person1.getEmail().equals(person.getEmail()) && person1.getPassword().equals(person.getPassword())){
+                System.out.println("matched");
+                return person1;
+            }
+        }
+        System.out.println("Email and password:"+person.getEmail()+" "+person.getPassword());
+        System.out.println("persons:"+persons);
+        /*person=null;
         if (!persons.isEmpty()){
             person = persons.get(0);
             person.setPassword(null);
-        }
-        return person;
+        }*/
+        return null;
     }
 
     @GetMapping("/email")
@@ -55,6 +65,7 @@ public class PersonController {
 
     @GetMapping
     public List<Person> getAll() {
+        System.out.println("get all called");
         return personService.findAll();
     }
 
@@ -64,7 +75,7 @@ public class PersonController {
     }*/
 
     @DeleteMapping(value="/{id}")
-    public void delete(@RequestBody Person person) {
-        personService.removePerson(person);
+    public void delete(@PathVariable Long id) {
+        personService.removePerson(new Person(id));
     }
 }

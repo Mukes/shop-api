@@ -16,6 +16,7 @@ public class Person {
 	private String phone;
 	private boolean enable;
 	private String password;
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	public Person(){

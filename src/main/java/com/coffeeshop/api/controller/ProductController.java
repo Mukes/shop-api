@@ -45,6 +45,7 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getAll() {
+        System.out.println("Get All called");
         return productService.getAllProduct();
     }
 
